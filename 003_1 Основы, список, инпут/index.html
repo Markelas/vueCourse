@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counter</title>
+  <link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="container pt-5" id="app">
+  <div class="card center">
+    <div v-html="myHtml"></div> <!--Передаём сюда переменную с HTML конструкцией-->
+      <h2 v-text="title"></h2> <!--Тоже самое, что и {{ title }}-->
+      <h2 v-once>{{ title }}</h2> <!--Не изменять эту переменную-->
+      <h2 v-pre>{{ title }}</h2> <!--Будет показываться обычный код-->
+
+      <button
+        @click="title = 'Поменяли название'"
+        class="btn"
+        >Нажми сюда, чтобы поменять название</button>
+
+      <ul class="list">
+        <li class="list-item" v-for="(item, i) in 7">  <!--Можно просто задавать цикл-->
+          <strong>{{ i + 1}}</strong> {{ item }}
+        </li>
+
+        <li class="list-item" v-for="(value, key) in person">  <!--Можно сделать итерацию по объекту и вывести на странице-->
+          {{ key }}  {{ value }}
+
+        </li>
+      </ul>
+      <h3>Нажми на слова ниже, чтобы удалить</h3>
+      <ul 
+        class="list"
+        v-if="items.length"> <!--Если весь массив со словами удалили-->
+        <li 
+          class="list-item" 
+          v-for="(item, i) in items" 
+          @click="items.splice(i, 1)"> <!--При клике на слово будем удалять его, обращаясь по индексу-->
+            <strong> {{ item }} </strong>
+        </li>
+      </ul>
+      <h3 v-else> Массив закончился, все удалено</h3><!--Выводим, если элементов будет 0 штук-->
+      <h3 v-show="items.length === 0">Текст, который просто скрываем, оставляем в DOM дереве, получает display none</h3>
+      
+      <h3>Зачем нужен key</h3>
+      <ul>
+        <li 
+          class="list-item" 
+          v-for="(num, i) in numbers" 
+          @click="numbers.splice(i, 1)"
+          :key="num"
+        > <!--Когда удаляем элемент списка, введеный текст в input переносится на другой элемент, с помощью key удаляется и этот текст-->
+          <strong> {{ num }} </strong>&nbsp;
+          <input type="text" @click.stop> <!--С помощью @click.stop, при клике на инпут он не удаляется, останавливается событие -->      
+        </li>
+      </ul>
+      <div class="form-control">
+        <input 
+        type="text"
+        @keyup.enter="addItem"
+        ref="myInput">
+      </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script src="app.js"></script>
+</body>
+</html>
