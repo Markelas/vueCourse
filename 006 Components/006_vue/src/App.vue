@@ -18,10 +18,12 @@
         v-for="item in news"
         :key="item.id"
         v-bind:title="item.title"
-        v-bind:it="item.id"
+        v-bind:id="item.id"
         v-bind:is-open="item.isOpen"
+        v-bind:was-read="item.wasRead"
         @open-news="openNews"
         @read-news="readNews"
+        @unmark="unreadNews"
       ></app-news>
       <!--мы обращаемся к событию, которое создали в AppNews (open-news), с помощью $emit-->
     </div>
@@ -41,11 +43,13 @@ export default {
           title: "Сегодня солнечная погода",
           id: 1,
           isOpen: false,
+          wasRead: false,
         },
         {
           title: "Vue 3 работает",
           id: 2,
           isOpen: false,
+          wasRead: false,
         },
       ],
     };
@@ -55,8 +59,16 @@ export default {
       this.openRate++;
       console.log(data, data2);
     },
-    readNews() {
+    readNews(id) {
+      const idx = this.news.findIndex((news) => news.id === id);
+      this.news[idx].wasRead = true;
+      console.log(id); //Передаём id новости
       this.readRate++;
+    },
+    unreadNews(id) {
+      const news = this.news.find((news) => news.id === id);
+      news.wasRead = false;
+      this.readRate--;
     },
   },
   components: {

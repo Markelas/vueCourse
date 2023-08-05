@@ -5,6 +5,9 @@
       <button class="btn" @click="open">
         {{ isNewsOpen ? "Закрыть" : "Открыть" }}
       </button>
+      <button class="btn danger" v-if="wasRead" @click="unmark">
+        Отметить непрочитанной
+      </button>
       <div v-if="isNewsOpen">
         <hr />
         <p>
@@ -13,7 +16,10 @@
           architecto amet suscipit tempore fugiat, autem eius culpa, accusantium
           alias, iure commodi! Fugit.
         </p>
-        <button class="btn primary" @click="mark">Прочесть новость</button>
+        <button v-if="!wasRead" class="btn primary" @click="mark">
+          <!--Чтобы после прочтения новости, кнопка исчезала, мы передаем id новости в methods-->
+          Прочесть новость
+        </button>
         <!--Связываем кнопку в AppNews с App.vue 1. создаем метод mark, эммитим его $emit 2. При клике вызываем его 3. в App.vue навешиваем при клике на компонент app-news и вызываем новый метод, который будет обновлять счетчик на +1 -->
       </div>
     </div>
@@ -24,13 +30,14 @@
 export default {
   // props: ["title"],
   props: {
+    wasRead: Boolean,
     title: {
       type: String, //Можем еще более тонко настраивать props, можно указать тип и обязательность
       required: true, //Обязательность
     },
     id: {
       type: Number,
-      required: true,
+      required: false,
     },
     isOpen: {
       type: Boolean,
@@ -45,14 +52,15 @@ export default {
   // emits: ["open-news"],
 
   emits: {
-    "open-news"(num) {
-      if (num) {
-        return true; //К примеру, можем валидировать, если в метод передается число, то валидация успешна, если нет, то ошибка
+    "open-news": null,
+    "read-news"(id) {
+      if (id) {
+        return true;
       }
-      console.warn("Нет числа в методе");
+      console.warn("Нет параметра id для emit read-news");
       return false;
     },
-    "read-news": null,
+    unmark: null,
     //Если валидатор не нужен, то просто можно указать "open-news": null
   },
   data() {
@@ -69,7 +77,10 @@ export default {
     },
     mark() {
       this.isNewsOpen = false;
-      this.$emit("read-news");
+      this.$emit("read-news", this.id);
+    },
+    unmark() {
+      this.$emit("unmark", this.id);
     },
   },
 };
