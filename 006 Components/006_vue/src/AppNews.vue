@@ -21,7 +21,7 @@
           Прочесть новость</app-button
         >
         <!--Связываем кнопку в AppNews с App.vue 1. создаем метод mark, эммитим его $emit 2. При клике вызываем его 3. в App.vue навешиваем при клике на компонент app-news и вызываем новый метод, который будет обновлять счетчик на +1 -->
-        <app-news-list :news="news"></app-news-list
+        <app-news-list></app-news-list
         ><!--Этот компонент промежуточный, просто для того, чтобы передавать данные-->
       </div>
     </div>
@@ -34,7 +34,6 @@ import AppNewsList from "./AppNewsList.vue";
 export default {
   // props: ["title"],
   props: {
-    news: Array,
     wasRead: Boolean,
     title: {
       type: String, //Можем еще более тонко настраивать props, можно указать тип и обязательность

@@ -21,7 +21,6 @@
         v-bind:id="item.id"
         v-bind:is-open="item.isOpen"
         v-bind:was-read="item.wasRead"
-        :news="news"
         @open-news="openNews"
         @read-news="readNews"
         @unmark="unreadNews"
@@ -53,6 +52,13 @@ export default {
           wasRead: false,
         },
       ],
+    };
+  },
+  provide() {
+    return {
+      title: "Список всей новостей",
+      news: this.news, //Передаем массив news с объектами
+      //С помощью provide, все дочерние компонтненты, могут получить доступ до данных в provide
     };
   },
   methods: {
