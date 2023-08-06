@@ -16,6 +16,7 @@ export default {
         return ["", "primary", "danger"].includes(value);
       },
     },
+    methods: {},
   },
 };
 </script>
