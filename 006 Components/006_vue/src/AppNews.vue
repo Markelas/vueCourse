@@ -2,12 +2,12 @@
   <div>
     <div class="card">
       <h3>{{ title }}</h3>
-      <button class="btn" @click="open">
+      <app-button @action="open">
         {{ isNewsOpen ? "Закрыть" : "Открыть" }}
-      </button>
-      <button class="btn danger" v-if="wasRead" @click="unmark">
-        Отметить непрочитанной
-      </button>
+      </app-button>
+      <app-button color="danger" v-if="wasRead" @action="$emit('unmark', id)"
+        >Отметить непрочитанной
+      </app-button>
       <div v-if="isNewsOpen">
         <hr />
         <p>
@@ -16,20 +16,25 @@
           architecto amet suscipit tempore fugiat, autem eius culpa, accusantium
           alias, iure commodi! Fugit.
         </p>
-        <button v-if="!wasRead" class="btn primary" @click="mark">
+        <app-button v-if="!wasRead" color="primary" @action="mark">
           <!--Чтобы после прочтения новости, кнопка исчезала, мы передаем id новости в methods-->
-          Прочесть новость
-        </button>
+          Прочесть новость</app-button
+        >
         <!--Связываем кнопку в AppNews с App.vue 1. создаем метод mark, эммитим его $emit 2. При клике вызываем его 3. в App.vue навешиваем при клике на компонент app-news и вызываем новый метод, который будет обновлять счетчик на +1 -->
+        <app-news-list :news="news"></app-news-list
+        ><!--Этот компонент промежуточный, просто для того, чтобы передавать данные-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import AppButton from "./AppButton";
+import AppNewsList from "./AppNewsList.vue";
 export default {
   // props: ["title"],
   props: {
+    news: Array,
     wasRead: Boolean,
     title: {
       type: String, //Можем еще более тонко настраивать props, можно указать тип и обязательность
@@ -79,9 +84,10 @@ export default {
       this.isNewsOpen = false;
       this.$emit("read-news", this.id);
     },
-    unmark() {
-      this.$emit("unmark", this.id);
-    },
+    // unmark() {
+    //   this.$emit("unmark", this.id);
+    // }, Можно не создавать новую функцию, а просто указать его в событии клик
   },
+  components: { AppButton, AppNewsList },
 };
 </script>

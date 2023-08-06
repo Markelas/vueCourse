@@ -21,6 +21,7 @@
         v-bind:id="item.id"
         v-bind:is-open="item.isOpen"
         v-bind:was-read="item.wasRead"
+        :news="news"
         @open-news="openNews"
         @read-news="readNews"
         @unmark="unreadNews"

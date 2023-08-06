@@ -5,6 +5,8 @@ import "./theme.css";
 
 //createApp(App).mount("#app");
 
+// App -> AppNews -> AppNewsList
+
 const app = createApp(App);
 
 //global registration
