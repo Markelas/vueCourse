@@ -12,9 +12,9 @@ const app = createApp(App);
 //global registration
 app.component("the-header", TheHeader);
 app.component(
-  "app-async-component",
+  "async-component",
   defineAsyncComponent(() => {
-    return import("./AppAsyncComponent"); //Чтобы сделать компонент асинхронным
+    return import("./AppAsyncComponent"); //Чтобы сделать асинхронный компонент
   })
 );
 
