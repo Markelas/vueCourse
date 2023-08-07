@@ -3,6 +3,7 @@
     <the-header></the-header>
     <div class="container pt-1">
       <div class="card">
+        <async-component></async-component>
         <h2>Slots</h2>
       </div>
 
@@ -33,9 +34,8 @@
 
 <script>
 import AppBlock from "./AppBlock";
-import AppList from "./AppList";
 export default {
-  components: { AppBlock, AppList },
+  components: { AppBlock },
 };
 </script>
 
