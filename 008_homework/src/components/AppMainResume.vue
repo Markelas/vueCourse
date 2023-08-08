@@ -1,7 +1,6 @@
 <template>
   <div v-for="item in blocks" :key="item" :id="item.id" :type="item.type">
-    <!-- <div>{{ item }}</div>
-    <div>{{ item.value }}</div> -->
+    <!--Делаем цикл по массиву с объектами, проверяем, есть ли совпадение по типу, если да, то добавляем этот блок-->
     <app-title
       v-if="item.type === 'title'"
       :valueBlock="item.value"
