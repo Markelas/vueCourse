@@ -1,5 +1,5 @@
 <template>
-  <form class="card card-w30" @submit.prevent="submitHandler">
+  <form class="card card-w30" @submit.prevent="submitHandler(value, type, id)">
     <!--Отменяем стандартное поведение перезагрузки-->
     <div class="form-control">
       <label for="type">Тип блока</label>
@@ -30,12 +30,13 @@ export default {
       valid: false,
     };
   },
+  // props: ["blocks"],
   emits: ["block-added"], //Событие на добавление блоков
   methods: {
     submitHandler() {
       //При нажатии на кнопку эмитим событие добавления блока на страницу резюме
       if (this.validTextArea()) {
-        //Если форма прошла валидацию, то будет совершаться действие
+        // Если форма прошла валидацию, то будет совершаться действие
         this.$emit("block-added", {
           type: this.type,
           value: this.value,

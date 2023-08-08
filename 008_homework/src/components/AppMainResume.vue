@@ -1,21 +1,44 @@
 <template>
-  <h1>Резюме Nickname</h1>
-  <app-avatar></app-avatar>
-  <app-subtitle></app-subtitle>
-  <app-text></app-text>
+  <div v-for="item in blocks" :key="item" :id="item.id" :type="item.type">
+    <!-- <div>{{ item }}</div>
+    <div>{{ item.value }}</div> -->
+    <app-title
+      v-if="item.type === 'title'"
+      :valueBlock="item.value"
+    ></app-title>
+    <app-avatar
+      v-else-if="item.type === 'avatar'"
+      :valueBlock="item.value"
+    ></app-avatar>
+    <app-subtitle
+      v-else-if="item.type === 'subtitle'"
+      :valueBlock="item.value"
+    ></app-subtitle>
+    <app-text
+      v-else-if="item.type === 'text'"
+      :valueBlock="item.value"
+    ></app-text>
+  </div>
 </template>
 
 <script>
 import AppAvatar from "././AppMiniComponents/AppAvatar.vue";
 import AppSubtitle from "./AppMiniComponents/AppSubtitle.vue";
 import AppText from "./AppMiniComponents/AppText.vue";
+import AppTitle from "./AppMiniComponents/AppTitle.vue";
 export default {
   props: ["blocks"], //Передаем сюда информацию о блоках
   data() {
-    return {};
+    return {
+      valueBlock: "",
+    };
   },
-  methods: {},
-  components: { AppAvatar, AppSubtitle, AppText },
+  methods: {
+    check() {
+      console.log(this.blocks);
+    },
+  },
+  components: { AppAvatar, AppSubtitle, AppText, AppTitle },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <h2>{{ valueBlock }}</h2>
+  <h1>{{ valueBlock }}</h1>
 </template>
 
 <script>
