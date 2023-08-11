@@ -51,6 +51,8 @@ export default {
       this.title = "";
       this.date = "";
       this.description = ""; //Очищаем форму
+      this.$store.commit("addTaskToList"); //Отправляем запрос
+      this.$store.commit("loadTasks");
     },
   },
 };

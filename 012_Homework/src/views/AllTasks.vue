@@ -1,22 +1,22 @@
 <template>
-  <h1 class="text-white center">Задач пока нет</h1>
-  <template>
-    <h3 class="text-white">Всего активных задач: 0</h3>
+  <h1 class="text-white center" v-if="taskList.length < 0">Задач пока нет</h1>
+  <h3 class="text-white">Всего активных задач: {{ taskList.length }}</h3>
+  <div v-for="item in taskList" :key="item">
     <div class="card">
       <h2 class="card-title">
-        Название задачи
+        {{ item.title }}
         <AppStatus :type="'done'" />
       </h2>
       <p>
         <strong>
           <small>
-            {{ new Date().toLocaleDateString() }}
+            {{ item.date }}
           </small>
         </strong>
       </p>
       <button class="btn primary">Посмотреть</button>
     </div>
-  </template>
+  </div>
 </template>
 
 <script>
@@ -24,5 +24,14 @@ import AppStatus from "../components/AppStatus";
 
 export default {
   components: { AppStatus },
+  computed: {
+    taskList() {
+      return this.$store.state.taskList;
+    },
+  },
+  mounted() {
+    this.$store.commit("loadTasks");
+    console.log("array", this.$store.state.taskList);
+  },
 };
 </script>
