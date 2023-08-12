@@ -7,7 +7,7 @@ const router = createRouter({
   history: createWebHistory(), //Записывать путь в историю
   routes: [
     { path: "/new-task", component: NewTask },
-    { path: "/one-task", component: OneTask },
+    { path: "/one-task/:id", component: OneTask }, //Задаём и переходим по id таска
     { path: "/all-tasks", component: AllTasks, alias: "/" },
   ],
   linkActiveClass: "active", //Полписываем отображение активности классов

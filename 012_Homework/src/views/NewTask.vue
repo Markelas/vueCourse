@@ -52,7 +52,8 @@ export default {
       this.date = "";
       this.description = ""; //Очищаем форму
       this.$store.commit("addTaskToList"); //Отправляем запрос
-      this.$store.commit("loadTasks");
+      this.$store.commit("loadTasks"); //Загружаем
+      this.$router.push("/"); //Автоматически переходит на главную страницу
     },
   },
 };

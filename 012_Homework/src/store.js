@@ -1,14 +1,17 @@
 import { createStore } from "vuex";
 import axios from "axios";
+//import firebase from "firebase";
 
 export default createStore({
   state() {
     return {
+      kriptoKey: "",
       taskList: [],
       newTask: {},
-      status: "",
+      taskStatus: "",
       id: "",
       loading: false,
+      activeTask: {},
     };
   },
   mutations: {
@@ -34,6 +37,8 @@ export default createStore({
             date: state.newTask.date,
             description: state.newTask.description,
             id: state.newTask.id,
+            taskStatus: "Active",
+            kriptoKey: "",
           }
         )
         .then(function (response) {
@@ -53,23 +58,39 @@ export default createStore({
           //Попробуем сделать запрос с сервера, с помощью библиотеки axios
           "https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks.json"
         );
-        if (!data) {
-          //Если в базе нет людей, то будет ошибка, которую мы сами написали
-          throw new Error("Список людей пуст");
-        }
         state.taskList = Object.keys(data).map((key) => {
           return {
             id: key,
             ...data[key], //С помощью оператора spread Все ключи развернутся в результирующий объект
+            kriptoKey: key, //Присваиваем ключи, чтобы в дальнейшем, отредактировать таск
           };
         }); //Здесь будут криптографические ключи,
         state.loading = false;
       } catch (e) {
-        this.loading = false;
+        state.loading = false;
+        console.log(e.message);
+      }
+      console.log(state.taskList);
+    },
+    //Обновление данных
+    async pushUpdateTask(state, payload) {
+      console.log("state", state, "payload", payload);
+      try {
+        await axios.patch(
+          `https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks/${payload}.json`,
+          { taskStatus: "in progress" }
+        );
+      } catch (e) {
         console.log(e.message);
       }
     },
   },
   actions: {},
-  getters: {},
+  getters: {
+    // checkTaskId(state) {
+    //   let id = window.location.pathname;
+    //   this.activeUrlId = parseInt(window.location.pathname.match(/\d+/)); // id страницы
+    //   console.log(this.$store.getters.taskById(id));
+    // },
+  },
 });

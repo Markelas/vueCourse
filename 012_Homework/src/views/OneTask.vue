@@ -1,25 +1,55 @@
 <template>
   <div class="card">
-    <h2>Название задачи</h2>
-    <p><strong>Статус</strong>: <AppStatus :type="'done'" /></p>
-    <p><strong>Дэдлайн</strong>: {{ new Date().toLocaleDateString() }}</p>
-    <p><strong>Описание</strong>: Описание задачи</p>
+    <h2>{{ activeTask.title }}</h2>
+    <p><strong>Статус</strong>: <AppStatus :type="activeTask.taskStatus" /></p>
+    <p><strong>Дэдлайн</strong>: {{ activeTask.date }}</p>
+    <p><strong>Описание</strong>: {{ activeTask.description }}</p>
     <div>
-      <button class="btn">Взять в работу</button>
-      <button class="btn primary">Завершить</button>
-      <button class="btn danger">Отменить</button>
+      <button class="btn" @click="updateTask('Active')">Взять в работу</button>
+      <button class="btn primary" @click="updateTask('Done')">Завершить</button>
+      <button class="btn danger" @click="updateTask('Canceled')">
+        Отменить
+      </button>
     </div>
   </div>
-  <h3 class="text-white center">
-    Задачи с id = <strong>Tут АЙДИ</strong> нет.
-  </h3>
+  <!-- <h3 class="text-white center" v-else>
+    Задачи с id = <strong>{{ activeTask.id }}</strong> нет.
+  </h3> -->
 </template>
 
 <script>
 import AppStatus from "../components/AppStatus";
 
 export default {
+  data() {
+    return {
+      activeUrlId: 0,
+      findUrlId: {},
+      classBtn: "Active",
+    };
+  },
+  props: ["taskOne"],
   components: { AppStatus },
+  computed: {
+    taskList() {
+      return this.$store.state.taskList;
+    },
+    activeTask() {
+      return this.$store.state.activeTask;
+    },
+  },
+  methods: {
+    // checkRealId() {
+    //   let id = window.location.pathname;
+    //   this.activeUrlId = parseInt(window.location.pathname.match(/\d+/)); // id страницы
+    //   console.log(this.$store.getters.taskById(id));
+    // },
+    updateTask() {
+      let key = this.activeTask.kriptoKey;
+      console.log(this.activeTask.kriptoKey);
+      this.$store.commit("pushUpdateTask", key);
+    },
+  },
 };
 </script>
 
