@@ -6,7 +6,7 @@
       <div class="card">
         <h2 class="card-title">
           {{ item.title }}
-          <AppStatus :type="'done'" />
+          <AppStatus :type="item.taskStatus" />
         </h2>
         <p>
           <strong>

@@ -74,11 +74,12 @@ export default createStore({
     },
     //Обновление данных
     async pushUpdateTask(state, payload) {
-      console.log("state", state, "payload", payload);
+      //console.log("state", state, "payload", payload);
+      console.log(payload.stat);
       try {
         await axios.patch(
-          `https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks/${payload}.json`,
-          { taskStatus: "in progress" }
+          `https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks/${payload.key}.json`,
+          { taskStatus: `${payload.stat}` }
         );
       } catch (e) {
         console.log(e.message);

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h2>{{ activeTask.title }}</h2>
-    <p><strong>Статус</strong>: <AppStatus :type="activeTask.taskStatus" /></p>
+    <p><strong>Статус</strong>: <AppStatus :type="this.classBtn" /></p>
     <p><strong>Дэдлайн</strong>: {{ activeTask.date }}</p>
     <p><strong>Описание</strong>: {{ activeTask.description }}</p>
     <div>
@@ -44,10 +44,12 @@ export default {
     //   this.activeUrlId = parseInt(window.location.pathname.match(/\d+/)); // id страницы
     //   console.log(this.$store.getters.taskById(id));
     // },
-    updateTask() {
+    updateTask(stat) {
+      this.classBtn = stat;
       let key = this.activeTask.kriptoKey;
       console.log(this.activeTask.kriptoKey);
-      this.$store.commit("pushUpdateTask", key);
+      this.$store.commit("pushUpdateTask", { key, stat });
+      //console.log(stat);
     },
   },
 };
