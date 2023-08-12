@@ -41,6 +41,7 @@ export default {
       console.log(id);
       this.$store.state.activeTask = item;
       console.log(this.taskList);
+      this.$store.commit("addTaskToLocalStorage");
     },
   },
   components: { AppStatus, AppLoading },

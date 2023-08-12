@@ -41,6 +41,7 @@ export default {
       return this.$store.state.activeTask;
     },
   },
+  mounted() {},
   methods: {
     // checkRealId() {
     //   let id = window.location.pathname;

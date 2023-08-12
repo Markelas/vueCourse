@@ -85,6 +85,16 @@ export default createStore({
         console.log(e.message);
       }
     },
+    addTaskToLocalStorage(state) {
+      let actTask = state.activeTask;
+      localStorage.setItem("task", JSON.stringify(actTask));
+      actTask = JSON.stringify(actTask);
+      console.log(actTask);
+      actTask = JSON.parse(actTask);
+      console.log(actTask);
+      state.activeTask = actTask;
+      console.log(state.activeTask);
+    },
   },
   actions: {},
   getters: {
