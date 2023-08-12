@@ -37,7 +37,7 @@ export default createStore({
             date: state.newTask.date,
             description: state.newTask.description,
             id: state.newTask.id,
-            taskStatus: "Active",
+            taskStatus: "Backlog",
             kriptoKey: "",
           }
         )

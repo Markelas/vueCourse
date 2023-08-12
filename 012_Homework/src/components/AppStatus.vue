@@ -10,24 +10,9 @@
 
 <script>
 export default {
-  props: ["type"],
+  props: ["type", "st"],
   data() {
-    return {
-      taskStatus: "Активно",
-      class: "primary",
-    };
-  },
-  methods: {
-    changeBadgeClass(type) {
-      let status =
-        type === "Active"
-          ? "warning"
-          : type === "Canceled"
-          ? "danger"
-          : "primary";
-      console.log("stat", status, "type", type);
-      return status;
-    },
+    return {};
   },
 };
 </script>

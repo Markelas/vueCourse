@@ -1,7 +1,10 @@
 <template>
   <div class="card">
     <h2>{{ activeTask.title }}</h2>
-    <p><strong>Статус</strong>: <AppStatus :type="this.classBtn" /></p>
+    <p>
+      <strong>Статус</strong>:
+      <AppStatus :type="classBtn" />
+    </p>
     <p><strong>Дэдлайн</strong>: {{ activeTask.date }}</p>
     <p><strong>Описание</strong>: {{ activeTask.description }}</p>
     <div>
@@ -25,7 +28,7 @@ export default {
     return {
       activeUrlId: 0,
       findUrlId: {},
-      classBtn: "Active",
+      classBtn: this.$store.state.activeTask.taskStatus,
     };
   },
   props: ["taskOne"],
