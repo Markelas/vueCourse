@@ -2,6 +2,25 @@
   <div class="card">
     <h1>Как Vue работает с TypeScript?</h1>
 
-    <button class="btn">Открыть пользователей</button>
+    <button class="btn" @click="navigate">Открыть пользователей</button>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+
+export default defineComponent({
+  setup() {
+    //С использованием composition api
+    const router = useRouter();
+    const navigate = (): void => {
+      router.push("/users");
+    };
+    return {
+      title: "Vue и TypeScript",
+      navigate,
+    };
+  },
+});
+</script>

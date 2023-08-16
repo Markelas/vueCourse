@@ -51,8 +51,9 @@ export default {
       this.title = "";
       this.date = "";
       this.description = ""; //Очищаем форму
-      this.$store.commit("addTaskToList"); //Отправляем запрос
-      this.$store.commit("loadTasks"); //Загружаем
+      let task = this.$store.state.newTask; //создаём переменную, чтобы передать в actions, для запроса
+      this.$store.dispatch("addTaskToList", task); //Отправляем запрос, с помощью actions
+      this.$store.dispatch("loadTasks"); //Загружаем все таски на странице
       this.$router.push("/"); //Автоматически переходит на главную страницу
     },
   },

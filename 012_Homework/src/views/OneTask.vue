@@ -52,7 +52,7 @@ export default {
       this.classBtn = stat;
       let key = this.activeTask.kriptoKey;
       console.log(this.activeTask.kriptoKey);
-      this.$store.commit("pushUpdateTask", { key, stat });
+      this.$store.dispatch("pushUpdateTask", { key, stat });
       //console.log(stat);
     },
   },

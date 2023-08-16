@@ -27,16 +27,23 @@ export default createStore({
     check(state) {
       console.log(state.taskList); //Пушим в массив с тасками
     },
+    loadTasksMutation(state, postArr) {
+      state.taskList = postArr;
+      state.loading = false;
+    },
+  },
+  actions: {
     //Добавление тасков
-    async addTaskToList(state) {
+    async addTaskToList(state, payload) {
+      console.log("payload", payload);
       axios
         .post(
           "https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks.json",
           {
-            title: state.newTask.title,
-            date: state.newTask.date,
-            description: state.newTask.description,
-            id: state.newTask.id,
+            title: payload.title,
+            date: payload.date,
+            description: payload.description,
+            id: payload.id,
             taskStatus: "Backlog",
             kriptoKey: "",
           }
@@ -50,58 +57,38 @@ export default createStore({
     },
 
     //ЗАГРУЗКА ТАСКОВ
-    async loadTasks(state) {
-      state.loading = true; //Меняем флаг, на то, что загрузка активна
+    async loadTasks(context) {
+      //Так как код асинхронный, помещаем в actions
+      //Меняем флаг, на то, что загрузка активна
       try {
         //Пытаемся загрузить данные с сервера
         const { data } = await axios.get(
           //Попробуем сделать запрос с сервера, с помощью библиотеки axios
           "https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks.json"
         );
-        state.taskList = Object.keys(data).map((key) => {
+        let loadArr = Object.keys(data).map((key) => {
           return {
             id: key,
             ...data[key], //С помощью оператора spread Все ключи развернутся в результирующий объект
             kriptoKey: key, //Присваиваем ключи, чтобы в дальнейшем, отредактировать таск
           };
         }); //Здесь будут криптографические ключи,
-        state.loading = false;
+        context.commit("loadTasksMutation", loadArr); //Вызываем мутацию для того, чтобы изменить значения в state
       } catch (e) {
-        state.loading = false;
         console.log(e.message);
       }
-      console.log(state.taskList);
     },
-    //Обновление данных
+    //Обновление статуса поста
     async pushUpdateTask(state, payload) {
-      //console.log("state", state, "payload", payload);
-      console.log(payload.stat);
       try {
         await axios.patch(
           `https://vue-freelance-mark-default-rtdb.firebaseio.com/tasks/${payload.key}.json`,
-          { taskStatus: `${payload.stat}` }
+          { taskStatus: `${payload.stat}` } //Передаем статус поста и отправляем на сервер
         );
       } catch (e) {
         console.log(e.message);
       }
     },
-    addTaskToLocalStorage(state) {
-      let actTask = state.activeTask;
-      localStorage.setItem("task", JSON.stringify(actTask));
-      actTask = JSON.stringify(actTask);
-      console.log(actTask);
-      actTask = JSON.parse(actTask);
-      console.log(actTask);
-      state.activeTask = actTask;
-      console.log(state.activeTask);
-    },
   },
-  actions: {},
-  getters: {
-    // checkTaskId(state) {
-    //   let id = window.location.pathname;
-    //   this.activeUrlId = parseInt(window.location.pathname.match(/\d+/)); // id страницы
-    //   console.log(this.$store.getters.taskById(id));
-    // },
-  },
+  getters: {},
 });
