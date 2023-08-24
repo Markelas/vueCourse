@@ -1,5 +1,9 @@
 <template>
-  <li class="todo-item" :class="{ 'todo-item--done': todo.completed }">
+  <li
+    class="todo-item"
+    :class="{ 'todo-item--done': todo.completed }"
+    @click="toggleTodo"
+  >
     <!--Если completed = true, то добавляется класс done-->
     <div class="todo-item__status">
       <i class="bi bi-check2"></i>
@@ -26,6 +30,15 @@ export default defineComponent({
       type: Object as PropType<Todo>, //Чтобы не использовать несколько раз одну и ту же запись, мы выносим типы в отдельный файл, который называется todo.ts
       required: true,
     },
+  },
+
+  methods: {
+    toggleTodo() {
+      this.$emit("toggleTodo", this.todo.id); //Эмиттим событие переключения и передаём id, передаем его в AppTodoList
+    },
+  },
+  emits: {
+    toggleTodo: (id: number) => Number.isInteger(id), // Мы валидируем эмит, указываем, что аргумент будет id и этот id это число
   },
 });
 </script>

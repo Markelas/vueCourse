@@ -4,8 +4,10 @@
       v-for="item in todos"
       :key="item.id"
       :todo="item"
+      @toggleTodo="toggleTodo"
     ></app-todo-item>
     <!--Проходимся по циклу в массиве todos и с помощью props передаем содержимое таска :todo="item" -->
+    <!--Также получаем заэмиченное событие toggleTodo и описываем логику, что сделаем-->
   </ul>
 </template>
 
@@ -41,5 +43,10 @@ export default defineComponent({
       ],
     };
   },
+  methods: {
+    toggleTodo(id: number) { 
+      console.log(id)
+    }
+  }
 });
 </script>
