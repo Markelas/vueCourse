@@ -1,9 +1,10 @@
 <template>
-  <li class="todo-item todo-item--done">
+  <li class="todo-item" :class="{ 'todo-item--done': todo.completed }">
+    <!--Если completed = true, то добавляется класс done-->
     <div class="todo-item__status">
       <i class="bi bi-check2"></i>
     </div>
-    <span class="todo-item__text">Learn the basics of Vue</span>
+    <span class="todo-item__text">{{ todo.text }}</span>
     <button class="todo-item__remove-button">
       <i class="bi bi-trash3"></i>
     </button>
@@ -12,13 +13,13 @@
 <!--Перенесли сюда один элемент строки-->
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
-  props: {
+  props: { //Описываем props, в него входит todo
     todo: {
-      // todo это просто объект, с любыми полями
-      type: Object,
+      // todo это просто объект
+      type: Object as PropType<[id: number, text: string, completed: boolean]>, // Типизируем объект с помощью utility type PropType<>
       required: true,
     },
   },
