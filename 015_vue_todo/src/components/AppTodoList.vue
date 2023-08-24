@@ -10,22 +10,28 @@
 </template>
 
 <script lang="ts">
+import { Todo } from "./../types/todo";
 import { defineComponent } from "vue";
 import AppTodoItem from "./minicomponents/AppTodoItem.vue";
 
-interface State { //Создаём интерфейс State, в нем есть массив todos, обозначили, какие в нем будут поля
-  todos: {
-    id: number;
-    text: string;
-    completed: boolean;
-  }[];
+interface State {
+  //Создаём интерфейс State, в нем есть массив todos, обозначили, какие в нем будут поля
+  // todos: {
+  //   id: number;
+  //   text: string;
+  //   completed: boolean;
+  // }[];
+  //Чтобы не использовать несколько раз одну и ту же запись, мы выносим типы в отдельный файл,
+  // который называется todo.ts, теперь, мы можем использовать этот тип в нескольких компонентах
+  todos: Todo[];
 }
 
 export default defineComponent({
   components: {
     AppTodoItem,
   },
-  data(): State { //data будет возвращать данные, по тому шаблону, который мы указали в interface State
+  data(): State {
+    //data будет возвращать данные, по тому шаблону, который мы указали в interface State
     return {
       todos: [
         { id: 0, text: "Learn the basics of Vue", completed: true },

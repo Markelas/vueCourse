@@ -13,13 +13,17 @@
 <!--Перенесли сюда один элемент строки-->
 
 <script lang="ts">
+import { Todo } from "../../types/todo";
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
-  props: { //Описываем props, в него входит todo
+  props: {
+    //Описываем props, в него входит todo
     todo: {
       // todo это просто объект
-      type: Object as PropType<[id: number, text: string, completed: boolean]>, // Типизируем объект с помощью utility type PropType<>
+
+      // type: Object as PropType<[id: number, text: string, completed: boolean]>, // Типизируем объект с помощью utility type PropType<>
+      type: Object as PropType<Todo>, //Чтобы не использовать несколько раз одну и ту же запись, мы выносим типы в отдельный файл, который называется todo.ts
       required: true,
     },
   },
