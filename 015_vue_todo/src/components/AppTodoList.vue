@@ -5,6 +5,7 @@
       :key="item.id"
       :todo="item"
       @toggleTodo="toggleTodo"
+      @removeTodo="removeTodo"
     ></app-todo-item>
     <!--Проходимся по циклу в массиве todos и с помощью props передаем содержимое таска :todo="item" -->
     <!--Также получаем заэмиченное событие toggleTodo и описываем логику, что сделаем-->
@@ -44,9 +45,17 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleTodo(id: number) { 
-      console.log(id)
-    }
-  }
+    toggleTodo(id: number) {
+      //Мы получили id, по этому id мы ищем задачу в массиве todos, если ее нашли, то меняем поле completed
+      const targetTodo = this.todos.find((todo: Todo) => todo.id === id); // todo обозначаем тип из интерфейса Todo
+
+      if (targetTodo) {
+        targetTodo.completed = !targetTodo.completed;
+      }
+    },
+    removeTodo(id: number) {
+      this.todos = this.todos.filter((todo: Todo) => todo.id !== id); //Записываем в массив todos, новый отфильтрованный массив, в нем не будет задачи, которую мы удалили
+    },
+  },
 });
 </script>

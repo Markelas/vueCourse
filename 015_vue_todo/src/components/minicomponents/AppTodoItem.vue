@@ -9,7 +9,8 @@
       <i class="bi bi-check2"></i>
     </div>
     <span class="todo-item__text">{{ todo.text }}</span>
-    <button class="todo-item__remove-button">
+    <button class="todo-item__remove-button" @click.stop="removeTodo">
+      <!--Событие удаления элемента, добавили к click модификатор stop, так как было бы всплытие события, так как корзина находится внутри элемента, по которому мы тоже можем кликать-->
       <i class="bi bi-trash3"></i>
     </button>
   </li>
@@ -36,9 +37,13 @@ export default defineComponent({
     toggleTodo() {
       this.$emit("toggleTodo", this.todo.id); //Эмиттим событие переключения и передаём id, передаем его в AppTodoList
     },
+    removeTodo() {
+      this.$emit("removeTodo", this.todo.id); //Тоже самое делаем и для удаления
+    },
   },
   emits: {
     toggleTodo: (id: number) => Number.isInteger(id), // Мы валидируем эмит, указываем, что аргумент будет id и этот id это число
+    removeTodo: (id: number) => Number.isInteger(id), //Также и для удаления из списка
   },
 });
 </script>
