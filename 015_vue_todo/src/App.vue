@@ -31,7 +31,7 @@ import AppFilters from "./components/AppFilters.vue";
 import AppTodoList from "./components/AppTodoList.vue";
 import AppAddTodo from "./components/AppAddTodo.vue";
 import AppFooter from "./components/AppFooter.vue";
-import { Stats } from "./types/stats" //Импортируем Интерфейс Stats, который описывает типы Stats
+import { Stats } from "./types/stats"; //Импортируем Интерфейс Stats, который описывает типы Stats
 import { Todo } from "./types/todo"; //Импортируем тип Todo из todo.ts
 import { Filter } from "./types/filter";
 
@@ -75,9 +75,9 @@ export default defineComponent({
         this.activeFilter //Если переменная activeFilter
       ) {
         case "Active": //Содержит тип Active
-          return this.todos.filter((todo) => !todo.completed); //Отображаем все не выполненные задачи (активные)
+          return this.activeTodos; //Отображаем все не выполненные задачи (активные)
         case "Done":
-          return this.todos.filter((todo) => todo.completed); //Если тип Выполнено, то отображаем их
+          return this.doneTodos; //Если тип Выполнено, то отображаем их
         case "All": //Иначе, будем показывать все
         default:
           return this.todos;
@@ -86,9 +86,17 @@ export default defineComponent({
     stats(): Stats {
       //Функция, для статистики, которая отображается в AppFooter
       return {
-        active: this.todos.filter((todo) => !todo.completed).length, //Сюда получаем длину отфильтрованных массивов, сколько активных задач
-        done: this.todos.filter((todo) => todo.completed).length, //И сколько выполненных задач
+        active: this.activeTodos.length, //Сюда получаем длину отфильтрованных массивов, сколько активных задач
+        done: this.doneTodos.length, //И сколько выполненных задач
       };
+    },
+    activeTodos(): Todo[] {
+      //Чтобы не писать везде длинную конструкцию, мы заменяем ее на activeTodos, чтобы было меньше кода
+      return this.todos.filter((todo) => !todo.completed);
+    },
+    doneTodos(): Todo[] {
+      //Также и для выполненных задач
+      return this.todos.filter((todo) => todo.completed);
     },
   },
   methods: {
