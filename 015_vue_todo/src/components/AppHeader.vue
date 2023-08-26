@@ -1,5 +1,5 @@
 <template>
   <header class="app-header">
-    <span class="logo">TODOS</span>
+    <span class="logo">Список задач</span>
   </header>
 </template>

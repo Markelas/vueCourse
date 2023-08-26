@@ -13,49 +13,32 @@
 </template>
 
 <script lang="ts">
+import { PropType, defineComponent } from "vue";
 import { Todo } from "./../types/todo";
-import { defineComponent } from "vue";
 import AppTodoItem from "./minicomponents/AppTodoItem.vue";
-
-interface State {
-  //Создаём интерфейс State, в нем есть массив todos, обозначили, какие в нем будут поля
-  // todos: {
-  //   id: number;
-  //   text: string;
-  //   completed: boolean;
-  // }[];
-  //Чтобы не использовать несколько раз одну и ту же запись, мы выносим типы в отдельный файл,
-  // который называется todo.ts, теперь, мы можем использовать этот тип в нескольких компонентах
-  todos: Todo[];
-}
 
 export default defineComponent({
   components: {
     AppTodoItem,
   },
-  data(): State {
-    //data будет возвращать данные, по тому шаблону, который мы указали в interface State
-    return {
-      todos: [
-        { id: 0, text: "Learn the basics of Vue", completed: true },
-        { id: 1, text: "Learn the basics of Typescript", completed: false },
-        { id: 2, text: "Start new project", completed: false },
-        //{ id: '', tsf: 143} Теперь нельзя передавать данные, которые не соответствуют интерфейсу
-      ],
-    };
+  props: {
+    todos: {
+      //Получаем массив Array, с типом Todo и затем с помощью v-for отображаем их, когда с ними происходят какие-либо события,
+      //переключение или удаление, вызывается события и затем они с помощью emit передаются в App-->
+      type: Array as PropType<Todo[]>,
+    },
   },
   methods: {
     toggleTodo(id: number) {
-      //Мы получили id, по этому id мы ищем задачу в массиве todos, если ее нашли, то меняем поле completed
-      const targetTodo = this.todos.find((todo: Todo) => todo.id === id); // todo обозначаем тип из интерфейса Todo
-
-      if (targetTodo) {
-        targetTodo.completed = !targetTodo.completed;
-      }
+      this.$emit("toggleTodo", id); //Созданные события мы передаем дальше в компонент App
     },
     removeTodo(id: number) {
-      this.todos = this.todos.filter((todo: Todo) => todo.id !== id); //Записываем в массив todos, новый отфильтрованный массив, в нем не будет задачи, которую мы удалили
+      this.$emit("removeTodo", id);
     },
+  },
+  emits: {
+    toggleTodo: (id: number) => Number.isInteger(id),
+    removeTodo: (id: number) => Number.isInteger(id),
   },
 });
 </script>
