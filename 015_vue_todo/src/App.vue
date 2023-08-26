@@ -1,20 +1,26 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <app-filters :activeFilter="activeFilter"></app-filters> <!--Передаём значение, какой фильтр сейчас стоит All, Active или Done-->
+    <app-filters
+      :activeFilter="activeFilter"
+      @setFilter="setFilter"
+    ></app-filters>
+    <!--Передаём значение, какой фильтр сейчас стоит All, Active или Done-->
+    <!--Также при клике на кнопки фильтрации, мы передаем это событие из компонента AppFilters и получаем его здесь, затем меняем значение в activeFilter-->
 
     <main class="app-main">
       <!--Передаём в компонент list массив todos и далее из компонента получаем toggleTodo, чтобы переключать и removeTodo, для удаления задания-->
       <app-todo-list
-        :todos="todos"
+        :todos="filteredTodos"
         @toggleTodo="toggleTodo"
         @removeTodo="removeTodo"
       ></app-todo-list>
+      <!--Передаем в компонент AppTodoList тот массив, который мы отфильтровали в filterTodos, будет отображаться в зависимости от типа фильтра Все, Активные или Выполненные-->
       <app-add-todo @addTodo="addTodo"></app-add-todo>
       <!--Получаем из компонента addTodo событие addTodo, чтобы добавить в список новую задачу-->
     </main>
 
-    <app-footer></app-footer>
+    <app-footer :stats="stats"></app-footer>
   </div>
 </template>
 
@@ -25,6 +31,7 @@ import AppFilters from "./components/AppFilters.vue";
 import AppTodoList from "./components/AppTodoList.vue";
 import AppAddTodo from "./components/AppAddTodo.vue";
 import AppFooter from "./components/AppFooter.vue";
+import { Stats } from "./types/stats" //Импортируем Интерфейс Stats, который описывает типы Stats
 import { Todo } from "./types/todo"; //Импортируем тип Todo из todo.ts
 import { Filter } from "./types/filter";
 
@@ -61,6 +68,29 @@ export default defineComponent({
       activeFilter: "All",
     };
   },
+  computed: {
+    filteredTodos(): Todo[] {
+      //Вызывается метод, который возвращает массив по типу, который мы описали в todo.ts
+      switch (
+        this.activeFilter //Если переменная activeFilter
+      ) {
+        case "Active": //Содержит тип Active
+          return this.todos.filter((todo) => !todo.completed); //Отображаем все не выполненные задачи (активные)
+        case "Done":
+          return this.todos.filter((todo) => todo.completed); //Если тип Выполнено, то отображаем их
+        case "All": //Иначе, будем показывать все
+        default:
+          return this.todos;
+      } //Затем, передаем в AppTodoList и там, в зависимости от типа фильтрации, будем отображать список Всех, либо Активных, либо выполненных задач
+    },
+    stats(): Stats {
+      //Функция, для статистики, которая отображается в AppFooter
+      return {
+        active: this.todos.filter((todo) => !todo.completed).length, //Сюда получаем длину отфильтрованных массивов, сколько активных задач
+        done: this.todos.filter((todo) => todo.completed).length, //И сколько выполненных задач
+      };
+    },
+  },
   methods: {
     addTodo(todo: Todo) {
       //Переданное из компонента AddTodo событие вызывает функцию addTodo
@@ -77,6 +107,9 @@ export default defineComponent({
     },
     removeTodo(id: number) {
       this.todos = this.todos.filter((todo: Todo) => todo.id !== id); //Записываем в массив todos, новый отфильтрованный массив, в нем не будет задачи, которую мы удалили
+    },
+    setFilter(filter: Filter) {
+      this.activeFilter = filter;
     },
   },
 });
